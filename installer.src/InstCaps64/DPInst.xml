@@ -1,0 +1,248 @@
+<dpinst>
+  <promptIfDriverIsNotBetter/>
+  <installAllOrNone/>
+  <deleteBinaries/>
+  <language code="0x401">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x804">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x404">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x405">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x406">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x407">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x408">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x409">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0xC0A">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x40B">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x40C">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x40D">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x40E">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x410">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x411">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x412">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x414">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x413">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x415">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x416">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x816">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x419">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x41D">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <language code="0x41F">
+    <dpinstTitle>Capsule Data Access System USB Driver Installer</dpinstTitle>
+    <welcomeTitle>Welcome to Capsule Data Access System USB Driver Setup Wizard!</welcomeTitle>
+    <welcomeIntro>This wizard will install Capsule Data Access System USB Driver. Please make sure that you turn on the Capsule Data Access System and connect it to the USB port of this computer before you proceed to the next step.</welcomeIntro>
+    <installHeaderTitle>Installing Capsule Data Access System USB Driver...</installHeaderTitle>
+    <finishTitle>Capsule Data Access System USB Driver installation completed.</finishTitle>
+    <finishText></finishText>
+    <watermarkPath>capsoacc.bmp</watermarkPath>
+  </language>
+
+  <enableNotListedLanguages>ON</enableNotListedLanguages>
+  <legacyMode>ON</legacyMode>
+</dpinst>
+

@@ -1,0 +1,67 @@
+; Installation inf for the CapsoVision Docking Station USB Driver
+;
+; (c) Copyright 2008 CapsoVision
+;
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%MfgName%
+DriverVer=1/4/2010,5.00.3077
+CatalogFile=cvxpusb.cat
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+cvxpusb.sys = 1
+
+[Manufacturer]
+%MfgName%=Microsoft, NTx86, NTia64, NTamd64
+
+[Microsoft.NTx86]
+%USB\VID_03EB&PID_941C.DeviceDesc%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+
+[Microsoft.NTia64]
+%USB\VID_03EB&PID_941C.DeviceDesc%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+
+[Microsoft.NTamd64]
+%USB\VID_03EB&PID_941C.DeviceDesc%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+
+[DestinationDirs]
+BULKUSB.Files.Ext = 10,System32\Drivers
+
+[BULKUSB.Dev.NT]
+CopyFiles=BULKUSB.Files.Ext
+
+[BULKUSB.Dev.NT.Services]
+Addservice = BULKUSB, 0x00000002, BULKUSB.AddService
+
+[BULKUSB.AddService]
+DisplayName    = %BULKUSB.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\cvxpusb.sys
+AddReg         = BULKUSB.AddReg
+LoadOrderGroup = Base
+
+[BULKUSB.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,cvxpusb.sys
+HKR,"Parameters","MaximumTransferSize",0x10001,4096
+HKR,"Parameters","DebugLevel",0x10001,2
+HKR,"Parameters","BulkUsbEnable",0x10001,1
+
+[BULKUSB.Files.Ext]
+cvxpusb.sys
+
+;---------------------------------------------------------------;
+
+[Strings]
+MSFT="Microsoft"
+MfgName="CapsoVision"
+Disk_Description="CapsoVision Docking System Bulk USB Driver Installation Disk"
+USB\VID_03EB&PID_941C.DeviceDesc="CapsoVision Docking System"
+BULKUSB.SvcDesc="CapsoVision Docking System Bulk USB driver 3"

@@ -1,0 +1,67 @@
+; Installation inf for the CapsoVisionProduction Test USB Driver
+;
+; (c) Copyright 2008 CapsoVision
+;
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%MfgName%
+DriverVer=1/4/2009,5.00.2094
+CatalogFile=cvtestusb.cat
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+CVTESTUSB.sys = 1
+
+[Manufacturer]
+%MfgName%=CapsoVision, NTx86, NTia64, NTamd64
+
+[CapsoVision.NTx86]
+%USB\VID_03EB&PID_952C.DeviceDesc%=CVTEST.Dev, USB\VID_03EB&PID_952C
+
+[CapsoVision.NTia64]
+%USB\VID_03EB&PID_952C.DeviceDesc%=CVTEST.Dev, USB\VID_03EB&PID_952C
+
+[CapsoVision.NTamd64]
+%USB\VID_03EB&PID_952C.DeviceDesc%=CVTEST.Dev, USB\VID_03EB&PID_952C
+
+[DestinationDirs]
+CVTEST.Files.Ext = 10,System32\Drivers
+
+[CVTEST.Dev.NT]
+CopyFiles=CVTEST.Files.Ext
+
+[CVTEST.Dev.NT.Services]
+Addservice = CVTEST, 0x00000002, CVTEST.AddService
+
+[CVTEST.AddService]
+DisplayName    = %CVTEST.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\CVTESTUSB.sys
+AddReg         = CVTEST.AddReg
+LoadOrderGroup = Base
+
+[CVTEST.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,CVTESTUSB.sys
+HKR,"Parameters","MaximumTransferSize",0x10001,4096
+HKR,"Parameters","DebugLevel",0x10001,2
+HKR,"Parameters","CVTESTEnable",0x10001,1
+
+[CVTEST.Files.Ext]
+CVTESTUSB.sys
+
+;---------------------------------------------------------------;
+
+[Strings]
+MSFT="Microsoft"
+MfgName="CapsoVision"
+Disk_Description="CapsoVision Production Test System Bulk USB Driver Installation Disk"
+USB\VID_03EB&PID_952C.DeviceDesc="CapsoVision Production Test System"
+CVTEST.SvcDesc="CapsoVision Production Test System Bulk USB driver 2094"

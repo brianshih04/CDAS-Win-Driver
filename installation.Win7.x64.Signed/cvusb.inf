@@ -1,0 +1,72 @@
+; Installation inf for the CapsoVision Docking Station USB Driver
+;
+; (c) Copyright 2014 CapsoVision
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%MfgName%
+DriverVer=02/20/2014,6.00.2090.1
+CatalogFile=cvusb64.cat
+DriverPackageDisplayName=%BULKUSB.SvcDesc%
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+CVISIONUSB.sys = 1
+
+[Manufacturer]
+%MfgName%=CapsoVision, NTamd64.5.1, NTx86.5.1, NTia64.5.1
+
+[CapsoVision.NTamd64.5.1]
+%DESCRIPTION_CDAS1%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+%DESCRIPTION_CDAS2%=BULKUSB.Dev, USB\VID_0638&PID_0931
+
+[CapsoVision.NTx86.5.1]
+%DESCRIPTION_CDAS1%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+%DESCRIPTION_CDAS2%=BULKUSB.Dev, USB\VID_0638&PID_0931
+
+[CapsoVision.NTia64.5.1]
+%DESCRIPTION_CDAS1%=BULKUSB.Dev, USB\VID_03EB&PID_941C
+%DESCRIPTION_CDAS2%=BULKUSB.Dev, USB\VID_0638&PID_0931
+
+[DestinationDirs]
+BULKUSB.Files.Ext = 10,System32\Drivers
+
+[BULKUSB.Dev.NT]
+CopyFiles=BULKUSB.Files.Ext
+
+[BULKUSB.Dev.NT.Services]
+Addservice = BULKUSB, 0x00000002, BULKUSB.AddService
+
+[BULKUSB.AddService]
+DisplayName    = %BULKUSB.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\CVISIONUSB.sys
+AddReg         = BULKUSB.AddReg
+LoadOrderGroup = Base
+
+[BULKUSB.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,CVISIONUSB.sys
+HKR,"Parameters","MaximumTransferSize",0x10001,4096
+HKR,"Parameters","DebugLevel",0x10001,2
+HKR,"Parameters","BulkUsbEnable",0x10001,1
+
+[BULKUSB.Files.Ext]
+CVISIONUSB.sys
+
+;---------------------------------------------------------------;
+
+[Strings]
+MSFT="Microsoft"
+MfgName="CapsoVision"
+Disk_Description="CapsoVision Docking System Bulk USB Driver Installation Disk"
+DESCRIPTION_CDAS1="CapsoVision Capsule Data Access System 1"
+DESCRIPTION_CDAS2="CapsoVision Capsule Data Access System 2"
+BULKUSB.SvcDesc="CapsoVision Docking System Bulk USB driver 2074"

@@ -1,0 +1,32 @@
+# Signing keys and private certificates
+installation.vista.x64.key/
+*.pfx
+*.pvk
+*.spc
+
+# Build outputs and intermediate files
+obj/
+bin/
+Debug/
+Release/
+x64/
+Win32/
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.log
+*.tlog
+*.lastbuildstate
+*.user
+*.suo
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.ipch
+
+# OS/editor noise
+Thumbs.db
+Desktop.ini
+.vs/
