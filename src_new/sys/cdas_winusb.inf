@@ -1,0 +1,44 @@
+; Example WinUSB INF for CDAS devices.
+;
+; This INF binds the device to the Windows in-box WinUSB function driver
+; instead of the legacy bulkusb/capsousb kernel driver.
+;
+; Verify VID/PID and signing requirements before deployment.
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=USBDevice
+ClassGuid={88BAE032-5A81-49f0-BC3D-A4FF138216D6}
+Provider=%MfgName%
+DriverVer=06/06/2026,1.0.0.0
+CatalogFile=cdas_winusb.cat
+
+[Manufacturer]
+%MfgName%=Standard,NTx86,NTamd64
+
+[Standard.NTx86]
+%CDAS1.DeviceDesc%=WINUSB_Install, USB\VID_03EB&PID_941C
+%CDAS2.DeviceDesc%=WINUSB_Install, USB\VID_0638&PID_0931
+
+[Standard.NTamd64]
+%CDAS1.DeviceDesc%=WINUSB_Install, USB\VID_03EB&PID_941C
+%CDAS2.DeviceDesc%=WINUSB_Install, USB\VID_0638&PID_0931
+
+[WINUSB_Install]
+Include=winusb.inf
+Needs=WINUSB.NT
+
+[WINUSB_Install.Services]
+Include=winusb.inf
+Needs=WINUSB.NT.Services
+
+[WINUSB_Install.HW]
+AddReg=WINUSB_DeviceInterfaceGUIDs
+
+[WINUSB_DeviceInterfaceGUIDs]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{00873FDF-62A8-11D1-AA5E-00C04FB1728B}"
+
+[Strings]
+MfgName="CapsoVision"
+CDAS1.DeviceDesc="CapsoVision CDAS WinUSB Device"
+CDAS2.DeviceDesc="CapsoVision CDAS2 WinUSB Device"
