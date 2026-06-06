@@ -25,16 +25,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <uxtheme.h>
 
 #include "..\include\bulkusb_api.h"
 #include "..\include\winusb_compat.h"
 #include "..\include\cdas_cmd.h"
+
+/* Enable modern Windows visual styles (v6 common controls) */
+#pragma comment(linker, \
+    "\"/manifestdependency:type='win32' "\
+    "name='Microsoft.Windows.Common-Controls' "\
+    "version='6.0.0.0' "\
+    "processorArchitecture='*' "\
+    "publicKeyToken='6595b64144ccf1df' "\
+    "language='*'\"")
 
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "comdlg32.lib")
 #pragma comment(lib, "setupapi.lib")
 #pragma comment(lib, "winusb.lib")
 #pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "uxtheme.lib")
 
 /* ── Control IDs ────────────────────────────────────────────────── */
 
@@ -105,6 +116,8 @@ static HWND       g_hwndProgress = NULL;
 static HWND       g_hwndStatus = NULL;
 static HWND       g_hBtnConnect = NULL;
 static HWND       g_hBtnDisconnect = NULL;
+static HFONT      g_hFontUI   = NULL;  /* Segoe UI 9pt for all controls */
+static HFONT      g_hFontMono = NULL;  /* Consolas for log output */
 
 /* ── Log helper ───────────────────────────────────────────────── */
 
@@ -136,6 +149,16 @@ static void SetConnected(BOOL connected)
     SetWindowTextA(g_hwndStatus, t);
     EnableWindow(g_hBtnConnect, !connected);
     EnableWindow(g_hBtnDisconnect, connected);
+}
+
+/* ── Apply font to all child controls ──────────────────────────── */
+
+static void ApplyFontToChildren(HWND parent, HFONT hFont)
+{
+    EnumChildWindows(parent, (WNDENUMPROC)[](HWND child, LPARAM lParam) -> BOOL {
+        SendMessageA(child, WM_SETFONT, (WPARAM)lParam, TRUE);
+        return TRUE;
+    }, (LPARAM)hFont);
 }
 
 /* ── Helpers: create child controls ────────────────────────────── */
@@ -396,9 +419,18 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
     case WM_CREATE:
     {
         HWND h;
-        HFONT hMono;
 
         g_hwndMain = hwnd;
+
+        /* Create fonts */
+        g_hFontUI = CreateFont(18, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+                               DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+                               CLEARTYPE_QUALITY, CLEARTYPE_QUALITY,
+                               DEFAULT_PITCH | FF_DONTCARE, "Segoe UI");
+        g_hFontMono = CreateFont(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+                                 DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+                                 CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
+                                 DEFAULT_PITCH | FF_DONTCARE, "Consolas");
 
         /* ── Device Connection group ── */
         CreateGroup(hwnd, "Device Connection", MARGIN, ROW0, WIN_W - 2*MARGIN, 82);
@@ -459,18 +491,19 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 
         /* ── Log output ── */
         g_hwndLog = CreateLogEdit(hwnd, MARGIN, ROW5, WIN_W - 2*MARGIN, 178, IDC_EDIT_LOG);
-        hMono = CreateFont(15, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
-                           DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-                           CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
-                           DEFAULT_PITCH | FF_DONTCARE, "Consolas");
-        SendMessageA(g_hwndLog, WM_SETFONT, (WPARAM)hMono, TRUE);
+        SendMessageA(g_hwndLog, WM_SETFONT, (WPARAM)g_hFontMono, TRUE);
 
         /* ── Progress bar ── */
-        g_hwndProgress = CreateProgressBar(hwnd, MARGIN, ROW6, WIN_W - 2*MARGIN, 20, IDC_PROGRESS);
+        g_hwndProgress = CreateProgressBar(hwnd, MARGIN, ROW6, WIN_W - 2*MARGIN, 22, IDC_PROGRESS);
         SendMessageA(g_hwndProgress, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
 
         /* ── Status label ── */
         g_hwndStatus = CreateLabel(hwnd, "Status: Disconnected", MARGIN, ROW7, WIN_W - 2*MARGIN, 20);
+
+        /* Apply Segoe UI font to all controls except log (which uses Consolas) */
+        ApplyFontToChildren(hwnd, g_hFontUI);
+        /* Re-apply Consolas to log after the blanket pass */
+        SendMessageA(g_hwndLog, WM_SETFONT, (WPARAM)g_hFontMono, TRUE);
 
         SetConnected(FALSE);
         AppendLog("CDAS USB Test Tool started.");
@@ -555,12 +588,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     icc.dwICC  = ICC_WIN95_CLASSES | ICC_PROGRESS_CLASS;
     InitCommonControlsEx(&icc);
 
+    /* Enable buffered painting for smoother rendering */
+    BufferedPaintInit();
+
     memset(&wc, 0, sizeof(wc));
     wc.cbSize        = sizeof(wc);
     wc.lpfnWndProc   = WndProc;
     wc.hInstance      = hInstance;
     wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground  = (HBRUSH)(COLOR_BTNFACE + 1);
+    wc.hbrBackground  = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszClassName  = "CDAS_TestTool_Class";
     wc.hIcon          = LoadIcon(NULL, IDI_APPLICATION);
     wc.style          = CS_HREDRAW | CS_VREDRAW;
@@ -574,7 +610,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     int y = (scrH - WIN_H) / 2;
 
     hwnd = CreateWindowExA(
-        0, wc.lpszClassName, "CDAS USB Test Tool",
+        WS_EX_COMPOSITED, wc.lpszClassName, "CDAS USB Test Tool",
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
         x, y, WIN_W, WIN_H,
         NULL, NULL, hInstance, NULL);
