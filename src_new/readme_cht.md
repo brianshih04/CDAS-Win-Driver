@@ -1,10 +1,22 @@
-# CDAS WinUSB 範例
+# CDAS WinUSB Source Package
 
-這個資料夾是精簡後的 CDAS WinUSB sample package。它保留原本 sample 的
-command flow，但把原本自製 WDM kernel driver 的依賴，替換成一個很薄的
-WinUSB 轉換層。
+`src_new` 是目前 active 的 CDAS WinUSB sample source package。
 
-## 這個資料夾保留哪些檔案
+它保留 user-mode sample command flow，並以 Windows 內建 `winusb.sys` 取代舊的
+自製 WDM kernel driver transport。
+
+## 支援的 Windows 版本
+
+這份 source package 只規劃給：
+
+- Windows 8
+- Windows 10
+- Windows 11
+
+Windows XP、Windows Vista、Windows 7 不屬於這份 WinUSB package 的支援範圍。
+這些舊系統的歷史檔案已封存在 `..\Old_files`。
+
+## 目錄結構
 
 ```text
 src_new
@@ -32,41 +44,25 @@ src_new
     `-- cdas_winusb.inf
 ```
 
-## 已移除的內容
-
-這個 `src_new` 不再保留原本的 WDM kernel driver source。以下舊檔案已從
-`src_new` 移除：
-
-- `bulkusb.c`
-- `bulkrwr.c`
-- `bulkpnp.c`
-- `bulkpwr.c`
-- `bulkdev.c`
-- WDK `sources` / `makefile`
-- 舊 MOF/resource 檔
-- 舊 BulkUsb HTML 文件
-- 無關 sample data
-
-原始版本仍保留在上一層的 `src` 資料夾。
-
 ## 架構
 
 ```text
-capsousb_test.cpp
+exe/capsousb_test.cpp
   -> OpenBulkUSB / ReadFile / WriteFile / CloseHandle
-  -> winusb_compat.h macro 轉換層
-  -> winusb_compat.cpp
+  -> include/winusb_compat.h
+  -> lib/winusb_compat.cpp
   -> WinUSB API
-  -> Windows 內建 winusb.sys
+  -> winusb.sys
   -> CDAS USB device
 ```
 
-`exe\capsousb_test.cpp` 仍然保留原本的 CDAS command protocol。轉換層只替換
-USB transport layer。
+CDAS command protocol 仍保留在 `exe/capsousb_test.cpp`。轉換層只改變 USB
+transport path。
 
 ## 轉換層
 
-`include\winusb_compat.h` 會把原本 sample code 的呼叫導到 WinUSB 實作：
+`include/winusb_compat.h` 會把舊 BulkUsb-style sample call 導到 WinUSB-backed
+function：
 
 ```cpp
 #define OpenBulkUSB WinUsbCompatOpenBulkUSB
@@ -75,78 +71,64 @@ USB transport layer。
 #define CloseHandle WinUsbCompatCloseHandle
 ```
 
-`lib\winusb_compat.cpp` 做的事情：
+`lib/winusb_compat.cpp` 負責：
 
-1. 用 SetupAPI 找 WinUSB device interface。
+1. 用 SetupAPI 找 device interface。
 2. 用 `CreateFile` 開啟 device path。
-3. 呼叫 `WinUsb_Initialize`。
-4. 依讀/寫方向選第一個 bulk 或 interrupt endpoint。
-5. 用 `WinUsb_ReadPipe` 或 `WinUsb_WritePipe` 傳輸資料。
+3. 用 `WinUsb_Initialize` 初始化 WinUSB。
+4. 依方向選擇 bulk 或 interrupt endpoint。
+5. 用 `WinUsb_ReadPipe` 與 `WinUsb_WritePipe` 傳輸資料。
 
 ## INF
 
-`sys\cdas_winusb.inf` 是 WinUSB INF 範本，會把 CDAS device 綁定到 Windows
-內建的 `winusb.sys`。
+`sys/cdas_winusb.inf` 會將支援的 CDAS USB device 綁定到 Windows 內建
+`winusb.sys`。
 
-目前列出的 hardware IDs：
+目前 hardware IDs：
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
 
-部署前必須再次確認 VID/PID 是否正確，也要依目標 Windows 版本完成 INF/package
+部署前必須再次確認實際 VID/PID。INF 必須依目標 Windows 環境完成 package 與
 簽章。
 
-## 支援的 Windows 版本
+## Build
 
-這個以 WinUSB 取代原 kernel driver 的方案只規劃給 Windows 8、Windows 10、
-Windows 11 使用。它依賴 Windows 內建的 `winusb.sys`，以及較新的 WinUSB INF
-binding 模式。
+Visual Studio project files 保留 legacy sample 結構：
 
-如果部署目標是 Windows XP、Windows Vista 或 Windows 7，除非另外準備並驗證
-該 OS 可用且已簽章的 WinUSB package，否則應繼續使用 `..\src` /
-`..\installation*` 內的原 legacy driver package。
+- `exe/capsousb_test.vcproj`
+- `exe/capsousb_test.vcxproj`
+- `lib/bulkusb_lib.vcproj`
+- `lib/bulkusb_lib-2010.vcxproj`
 
-## Build 注意事項
+目前使用 VS2022 `v143` toolset，不需要 MFC。
 
-保留 Visual Studio legacy project：
-
-- `exe\capsousb_test.vcproj`
-- `exe\capsousb_test.vcxproj`
-- `lib\bulkusb_lib.vcproj`
-- `lib\bulkusb_lib-2010.vcxproj`
-
-專案已更新為 VS2022 `v143` toolset，且不再需要 MFC。sample application 需要
-link：
-
-- `setupapi.lib`
-- `winusb.lib`
-
-本機已用下列方式完成 build 驗證：
+已驗證指令：
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
 MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
 ```
 
-build 成功，會產生 `exe\MFC_DLL_Debug\test_exe.exe`。build output 不保留在這份
-source package 內。
+sample 會 link：
 
-## 重要限制
+- `setupapi.lib`
+- `winusb.lib`
 
-- `OpenBulkUSB` 回傳的 `HANDLE` 實際上是轉換層 context pointer，不是真正的
-  Windows kernel handle。
-- 這個 handle 只能給本 sample 中被包裝過的 `ReadFile` / `WriteFile` /
-  `CloseHandle` 使用。
-- 不要把這個 handle 傳給其他 Win32 API。
-- 目前轉換層只會依方向選第一個 bulk 或 interrupt endpoint。
-- 如果 CDAS device 有多組同方向 endpoint，需要補明確 endpoint mapping。
-- 原本 sample 的 command flow 沒有重寫，因此原本的限制仍存在，例如目前
-  `main()` 仍是 hard-coded serial-number maintenance flow。
+## 安裝
 
-## 與原本 driver 的關係
+請使用 repository 根目錄的安裝指南：
 
-原本 `..\src\sys` 的自製 WDM kernel driver 負責在 kernel mode 處理 USB bulk
-transport。這個 `src_new` 改由 Windows 內建 `winusb.sys` 處理 transport。
+- `..\installation-guide.md`
+- `..\installation-guide_cht.md`
 
-CDAS command flow 仍然在 user-mode sample `exe\capsousb_test.cpp` 裡，沒有移到
-kernel driver。
+## 限制
+
+- `OpenBulkUSB` 回傳的是轉換層 context pointer，不是真正的 Windows kernel
+  handle。
+- 回傳的 handle 只能交給 sample 中被包裝過的 calls 使用。
+- endpoint selection 目前會選擇第一個符合方向的 bulk 或 interrupt endpoint。
+- 如果 device 在同方向有多個 endpoints，需要在 `lib/winusb_compat.cpp` 補上明確
+  endpoint mapping。
+- 原 sample command flow 被保留下來，但它不是完整的 CDAS3 command
+  implementation。
