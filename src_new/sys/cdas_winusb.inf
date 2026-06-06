@@ -12,6 +12,7 @@ ClassGuid={88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider=%MfgName%
 DriverVer=06/06/2026,1.0.0.0
 CatalogFile=cdas_winusb.cat
+PnpLockdown=1
 
 [Manufacturer]
 %MfgName%=Standard,NTx86,NTamd64
@@ -19,10 +20,12 @@ CatalogFile=cdas_winusb.cat
 [Standard.NTx86]
 %CDAS1.DeviceDesc%=WINUSB_Install, USB\VID_03EB&PID_941C
 %CDAS2.DeviceDesc%=WINUSB_Install, USB\VID_0638&PID_0931
+%CDASProductionTest.DeviceDesc%=WINUSB_ProductionTest_Install, USB\VID_03EB&PID_952C
 
 [Standard.NTamd64]
 %CDAS1.DeviceDesc%=WINUSB_Install, USB\VID_03EB&PID_941C
 %CDAS2.DeviceDesc%=WINUSB_Install, USB\VID_0638&PID_0931
+%CDASProductionTest.DeviceDesc%=WINUSB_ProductionTest_Install, USB\VID_03EB&PID_952C
 
 [WINUSB_Install]
 Include=winusb.inf
@@ -38,7 +41,22 @@ AddReg=WINUSB_DeviceInterfaceGUIDs
 [WINUSB_DeviceInterfaceGUIDs]
 HKR,,DeviceInterfaceGUIDs,0x10000,"{00873FDF-62A8-11D1-AA5E-00C04FB1728B}"
 
+[WINUSB_ProductionTest_Install]
+Include=winusb.inf
+Needs=WINUSB.NT
+
+[WINUSB_ProductionTest_Install.Services]
+Include=winusb.inf
+Needs=WINUSB.NT.Services
+
+[WINUSB_ProductionTest_Install.HW]
+AddReg=WINUSB_ProductionTest_DeviceInterfaceGUIDs
+
+[WINUSB_ProductionTest_DeviceInterfaceGUIDs]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{C20E4F22-44B8-4FEB-8F31-F78E29CCD035}"
+
 [Strings]
 MfgName="CapsoVision"
 CDAS1.DeviceDesc="CapsoVision CDAS WinUSB Device"
 CDAS2.DeviceDesc="CapsoVision CDAS2 WinUSB Device"
+CDASProductionTest.DeviceDesc="CapsoVision CDAS Production Test WinUSB Device"

@@ -10,6 +10,10 @@ extern "C" {
 HANDLE WinUsbCompatOpenBulkUSB(int output);
 void WinUsbCompatChooseUSBDevice(int type);
 void WinUsbCompatSelectCDASVersion(int version);
+void WinUsbCompatChooseUSBMode(int mode);
+int WinUsbCompatGetUSBDeviceNum(bool* foundCDAS1, bool* foundCDAS2);
+bool WinUsbCompatIsSingleCDAS1Attached(void);
+bool WinUsbCompatIsSingleCDAS2Attached(void);
 BOOL WinUsbCompatReadFile(
     HANDLE handle,
     LPVOID buffer,
@@ -38,6 +42,10 @@ BOOL WinUsbCompatCloseHandle(HANDLE handle);
 #define OpenBulkUSB WinUsbCompatOpenBulkUSB
 #define ChooseUSBDevice WinUsbCompatChooseUSBDevice
 #define SelectCDASVersion WinUsbCompatSelectCDASVersion
+#define ChooseUSBMode WinUsbCompatChooseUSBMode
+#define GetUSBDeviceNum WinUsbCompatGetUSBDeviceNum
+#define IsSingleCDAS1Attached WinUsbCompatIsSingleCDAS1Attached
+#define IsSingleCDAS2Attached WinUsbCompatIsSingleCDAS2Attached
 #define ReadFile WinUsbCompatReadFile
 #define WriteFile WinUsbCompatWriteFile
 #define CloseHandle WinUsbCompatCloseHandle

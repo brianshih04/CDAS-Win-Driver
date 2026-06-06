@@ -44,6 +44,8 @@ WinUSB package. Historical files for those systems are kept only in
 |-- installation-guide.md
 |-- installation-guide_cht.md
 |-- CDAS-Win-Driver-analysis.md
+|-- dist
+|   `-- capsousb_test.exe
 |-- Doc
 |   |-- CDAS3 New command_V16_AVISION.xlsx
 |   |-- USB docking system driver Guide.docx
@@ -71,6 +73,7 @@ comparison, and recovery only.
 - `src_new/lib/winusb_compat.cpp`: SetupAPI and WinUSB transport
   implementation.
 - `src_new/exe/capsousb_test.cpp`: sample command-flow code.
+- `dist/capsousb_test.exe`: prebuilt Win32 debug sample executable.
 - `installation-guide.md`: installation and verification procedure.
 - `CDAS-Win-Driver-analysis.md`: project analysis report.
 
@@ -80,8 +83,12 @@ The WinUSB INF currently includes:
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 Verify the actual device VID/PID before packaging or deployment.
+
+`src_new/sys/cdas_winusb.inf` registers the docking-system interface GUID and
+the production-test interface GUID used by the WinUSB compatibility layer.
 
 ## Build Summary
 
@@ -100,6 +107,11 @@ The sample links against:
 - `setupapi.lib`
 - `winusb.lib`
 
+The package was verified with WDK `InfVerif.exe`; the INF is valid.
+
+A prebuilt sample executable is kept at `dist/capsousb_test.exe`. Rebuild it from
+`src_new/exe/capsousb_test.vcxproj` whenever the sample source changes.
+
 ## Installation
 
 See `installation-guide.md` for the Windows 8/10/11 WinUSB installation flow.
@@ -110,7 +122,7 @@ Short version:
 2. Package and sign `src_new/sys/cdas_winusb.inf`.
 3. Install with `pnputil`.
 4. Verify that the device is using `winusb.sys`.
-5. Run the sample application.
+5. Run `dist/capsousb_test.exe` or a locally rebuilt sample application.
 
 ## Important Notes
 
@@ -120,4 +132,6 @@ Short version:
   sample should use that handle.
 - The compatibility layer selects the first bulk or interrupt endpoint that
   matches the requested direction.
+- Legacy helper APIs for device counting are present only as compatibility
+  stubs and return "not implemented".
 - The old custom WDM driver is not used by the active WinUSB package.

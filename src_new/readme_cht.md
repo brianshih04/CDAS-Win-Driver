@@ -88,9 +88,13 @@ function：
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 部署前必須再次確認實際 VID/PID。INF 必須依目標 Windows 環境完成 package 與
 簽章。
+
+INF 已包含 `PnpLockdown=1`，並註冊 docking-system 與 production-test 兩組
+interface GUID。
 
 ## Build
 
@@ -115,6 +119,11 @@ sample 會 link：
 - `setupapi.lib`
 - `winusb.lib`
 
+INF 已使用 WDK `InfVerif.exe` 驗證。
+
+repository 根目錄的 `dist/capsousb_test.exe` 是預先 build 好的 Win32 debug sample
+executable。若這份 source package 有變更，請重新 build 並更新該檔。
+
 ## 安裝
 
 請使用 repository 根目錄的安裝指南：
@@ -130,5 +139,7 @@ sample 會 link：
 - endpoint selection 目前會選擇第一個符合方向的 bulk 或 interrupt endpoint。
 - 如果 device 在同方向有多個 endpoints，需要在 `lib/winusb_compat.cpp` 補上明確
   endpoint mapping。
+- device-counting helper API 目前是 compatibility stub，會回傳 "not
+  implemented"。
 - 原 sample command flow 被保留下來，但它不是完整的 CDAS3 command
   implementation。

@@ -9,6 +9,8 @@ obj/
 bin/
 Debug/
 Release/
+MFC_DLL_Debug/
+MFC_DLL_Release/
 x64/
 Win32/
 *.obj

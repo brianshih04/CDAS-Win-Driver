@@ -88,9 +88,13 @@ Current hardware IDs:
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 Verify the actual VID/PID before deployment. The INF must be packaged and
 signed for the target Windows environment.
+
+The INF includes `PnpLockdown=1` and registers both docking-system and
+production-test interface GUIDs.
 
 ## Build
 
@@ -115,6 +119,11 @@ The sample links against:
 - `setupapi.lib`
 - `winusb.lib`
 
+The INF has been verified with WDK `InfVerif.exe`.
+
+The repository-level `dist/capsousb_test.exe` is a prebuilt copy of the Win32 debug
+sample executable. Rebuild and refresh it when this source package changes.
+
 ## Installation
 
 Use the repository-level installation guide:
@@ -131,5 +140,7 @@ Use the repository-level installation guide:
   endpoint by direction.
 - If a device exposes multiple endpoints in the same direction, add explicit
   endpoint mapping in `lib/winusb_compat.cpp`.
+- Device-counting helper APIs are compatibility stubs and return "not
+  implemented".
 - The original sample command flow is preserved and is not a full CDAS3 command
   implementation.

@@ -38,6 +38,7 @@ WinUSB API 與 device 溝通。
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 ## 簽章需求
 
@@ -48,6 +49,8 @@ signing key。
 Windows 10 與 Windows 11 的正式部署通常需要受信任的 driver package。
 
 若僅供工程測試，可依公司 driver test policy 使用 Windows test-signing mode。
+
+目前 INF 已包含 `PnpLockdown=1`，並已使用 WDK `InfVerif.exe` 檢查。
 
 ## 使用 pnputil 安裝
 
@@ -81,13 +84,19 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliar
 MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
 ```
 
-輸出檔：
+build 輸出檔：
 
 ```text
 src_new\exe\MFC_DLL_Debug\test_exe.exe
 ```
 
-build output 不會 commit 到 repository。
+repository 也保留一份預先 build 好的 copy：
+
+```text
+dist\capsousb_test.exe
+```
+
+如果 sample source 有變更，請重新 build executable，並更新 `dist` 內的 copy。
 
 ## 執行 Sample
 
@@ -95,7 +104,7 @@ build output 不會 commit 到 repository。
 系統管理員權限的 command prompt 執行 sample。
 
 ```bat
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+dist\capsousb_test.exe
 ```
 
 sample 保留 `capsousb_test.cpp` 內原本的 command flow。WinUSB 轉換層只替換
@@ -111,6 +120,8 @@ USB transport layer。
 - 如果傳輸失敗，請確認 device 有預期的 bulk-in 與 bulk-out endpoints。
 - 如果同方向有多個 endpoints，請在 `src_new/lib/winusb_compat.cpp` 增加明確的
   endpoint selection。
+- 如果程式呼叫舊的 device-counting helper API，這份 WinUSB sample layer 會回傳
+  "not implemented"。
 
 ## Rollback
 

@@ -67,6 +67,10 @@ static BOOL HardwareIdMatches(HDEVINFO infoSet, PSP_DEVINFO_DATA infoData)
         return _tcsstr(hardwareId, CDAS2_VID_PID) != NULL;
     }
 
+    if (g_deviceType == 1) {
+        return _tcsstr(hardwareId, CDAS_PRODUCTION_TEST_VID_PID) != NULL;
+    }
+
     return TRUE;
 }
 
@@ -162,6 +166,7 @@ static HANDLE OpenWinUsbPipe(const GUID* interfaceGuid, BOOL input)
     HDEVINFO infoSet;
     SP_DEVICE_INTERFACE_DATA interfaceData;
     DWORD index = 0;
+    DWORD lastError = ERROR_NOT_FOUND;
 
     infoSet = SetupDiGetClassDevs(
         interfaceGuid,
@@ -184,17 +189,20 @@ static HANDLE OpenWinUsbPipe(const GUID* interfaceGuid, BOOL input)
         infoData.cbSize = sizeof(infoData);
 
         if (!OpenInterfacePath(infoSet, &interfaceData, &infoData, &deviceHandle)) {
+            lastError = GetLastError();
             ++index;
             continue;
         }
 
         if (!HardwareIdMatches(infoSet, &infoData)) {
+            lastError = ERROR_NOT_FOUND;
             ::CloseHandle(deviceHandle);
             ++index;
             continue;
         }
 
         if (!WinUsb_Initialize(deviceHandle, &winusbHandle)) {
+            lastError = GetLastError();
             ::CloseHandle(deviceHandle);
             ++index;
             continue;
@@ -222,12 +230,14 @@ static HANDLE OpenWinUsbPipe(const GUID* interfaceGuid, BOOL input)
             return (HANDLE)context;
         }
 
+        lastError = GetLastError();
         WinUsb_Free(winusbHandle);
         ::CloseHandle(deviceHandle);
         ++index;
     }
 
     SetupDiDestroyDeviceInfoList(infoSet);
+    SetLastError(lastError);
     return INVALID_HANDLE_VALUE;
 }
 
@@ -317,4 +327,35 @@ extern "C" void WinUsbCompatChooseUSBDevice(int type)
 extern "C" void WinUsbCompatSelectCDASVersion(int version)
 {
     g_cdasVersion = version;
+}
+
+extern "C" void WinUsbCompatChooseUSBMode(int mode)
+{
+    UNREFERENCED_PARAMETER(mode);
+}
+
+extern "C" int WinUsbCompatGetUSBDeviceNum(bool* foundCDAS1, bool* foundCDAS2)
+{
+    if (foundCDAS1) {
+        *foundCDAS1 = false;
+    }
+
+    if (foundCDAS2) {
+        *foundCDAS2 = false;
+    }
+
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return 0;
+}
+
+extern "C" bool WinUsbCompatIsSingleCDAS1Attached(void)
+{
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return false;
+}
+
+extern "C" bool WinUsbCompatIsSingleCDAS2Attached(void)
+{
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+    return false;
 }

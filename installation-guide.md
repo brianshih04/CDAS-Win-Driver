@@ -38,6 +38,7 @@ Current INF IDs:
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 ## Signing Requirement
 
@@ -51,6 +52,9 @@ driver package.
 
 For engineering-only testing, Windows test-signing mode may be used according
 to the organization's driver test policy.
+
+The current INF includes `PnpLockdown=1` and has been checked with WDK
+`InfVerif.exe`.
 
 ## Install With pnputil
 
@@ -86,13 +90,20 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliar
 MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
 ```
 
-The output is:
+The build output is:
 
 ```text
 src_new\exe\MFC_DLL_Debug\test_exe.exe
 ```
 
-Build outputs are not committed to the repository.
+The repository also keeps a prebuilt copy at:
+
+```text
+dist\capsousb_test.exe
+```
+
+When the sample source changes, rebuild the executable and refresh the copy in
+`dist`.
 
 ## Run The Sample
 
@@ -101,7 +112,7 @@ appropriately permissioned command prompt if required by the local device access
 policy.
 
 ```bat
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+dist\capsousb_test.exe
 ```
 
 The sample keeps the original command flow in `capsousb_test.cpp`. The WinUSB
@@ -119,6 +130,8 @@ compatibility layer only replaces the USB transport layer.
   bulk-out endpoints.
 - If multiple endpoints exist in the same direction, add explicit endpoint
   selection in `src_new/lib/winusb_compat.cpp`.
+- If code calls legacy device-counting helper APIs, expect a "not implemented"
+  result from this WinUSB sample layer.
 
 ## Rollback
 
