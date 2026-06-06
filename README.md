@@ -59,7 +59,7 @@ WinUSB package. Historical files for those systems are kept only in
 |   `-- capsousb_test_no_wrapper.exe
 |-- Doc
 |   |-- CDAS3 New command_V16_AVISION.xlsx
-|   |-- USB docking system driver Guide.docx
+|   |-- USB docking system driver Guide.md
 |   `-- USB docking system driver Guide.pdf
 |-- src_new
 |   |-- readme.md
@@ -92,6 +92,10 @@ comparison, and recovery only.
   sample executable.
 - `dist/capsousb_test_no_wrapper.exe`: prebuilt Win32 debug no-wrapper sample
   executable.
+- `Doc/USB docking system driver Guide.md`: current WinUSB installation guide
+  source.
+- `Doc/USB docking system driver Guide.pdf`: rendered copy of the current
+  WinUSB installation guide.
 - `installation-guide.md`: installation and verification procedure.
 - `CDAS-Win-Driver-analysis.md`: project analysis report.
 

@@ -22,7 +22,7 @@ package. Historical files for those systems are archived under `..\Old_files`.
 src_new
 |-- readme.md
 |-- readme_cht.md
-|-- exe
+|-- exe_wtih_wrapper
 |   |-- capsousb_test.cpp
 |   |-- capsousb_test.vcxproj
 |   |-- stdafx.cpp
@@ -119,6 +119,12 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliar
 MSBuild.exe exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
+With-wrapper build output:
+
+```text
+exe_wtih_wrapper\Debug\capsousb_test_with_wrapper.exe
+```
+
 Validated no-wrapper sample command:
 
 ```bat
@@ -126,7 +132,13 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliar
 MSBuild.exe exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
-The sample links against:
+No-wrapper build output:
+
+```text
+exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
+```
+
+The samples link against:
 
 - `setupapi.lib`
 - `winusb.lib`
