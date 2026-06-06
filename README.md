@@ -23,6 +23,16 @@ CDAS sample application
   -> CDAS USB device
 ```
 
+The repository also includes a direct WinUSB sample that runs the same
+serial-number command test flow without the compatibility wrapper:
+
+```text
+CDAS no-wrapper sample application
+  -> SetupAPI / WinUSB API
+  -> Windows in-box winusb.sys
+  -> CDAS USB device
+```
+
 ## Supported Windows Versions
 
 This WinUSB package is intended for:
@@ -45,7 +55,8 @@ WinUSB package. Historical files for those systems are kept only in
 |-- installation-guide_cht.md
 |-- CDAS-Win-Driver-analysis.md
 |-- dist
-|   `-- capsousb_test.exe
+|   |-- capsousb_test.exe
+|   `-- capsousb_test_no_wrapper.exe
 |-- Doc
 |   |-- CDAS3 New command_V16_AVISION.xlsx
 |   |-- USB docking system driver Guide.docx
@@ -57,7 +68,8 @@ WinUSB package. Historical files for those systems are kept only in
 |   |   `-- cdas_winusb.inf
 |   |-- include
 |   |-- lib
-|   `-- exe
+|   |-- exe
+|   `-- exe_no_wrapper
 `-- Old_files
 ```
 
@@ -73,7 +85,11 @@ comparison, and recovery only.
 - `src_new/lib/winusb_compat.cpp`: SetupAPI and WinUSB transport
   implementation.
 - `src_new/exe/capsousb_test.cpp`: sample command-flow code.
+- `src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp`: direct WinUSB sample
+  with the same serial-number test flow and no wrapper project dependency.
 - `dist/capsousb_test.exe`: prebuilt Win32 debug sample executable.
+- `dist/capsousb_test_no_wrapper.exe`: prebuilt Win32 debug no-wrapper sample
+  executable.
 - `installation-guide.md`: installation and verification procedure.
 - `CDAS-Win-Driver-analysis.md`: project analysis report.
 
@@ -100,6 +116,7 @@ Validated local build target:
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
 MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The sample links against:
@@ -109,8 +126,12 @@ The sample links against:
 
 The package was verified with WDK `InfVerif.exe`; the INF is valid.
 
-A prebuilt sample executable is kept at `dist/capsousb_test.exe`. Rebuild it from
-`src_new/exe/capsousb_test.vcxproj` whenever the sample source changes.
+Prebuilt sample executables are kept under `dist`:
+
+- `dist/capsousb_test.exe`
+- `dist/capsousb_test_no_wrapper.exe`
+
+Rebuild them from the matching project whenever the sample source changes.
 
 ## Installation
 
@@ -122,7 +143,8 @@ Short version:
 2. Package and sign `src_new/sys/cdas_winusb.inf`.
 3. Install with `pnputil`.
 4. Verify that the device is using `winusb.sys`.
-5. Run `dist/capsousb_test.exe` or a locally rebuilt sample application.
+5. Run `dist/capsousb_test.exe`, `dist/capsousb_test_no_wrapper.exe`, or a
+   locally rebuilt sample application.
 
 ## Important Notes
 

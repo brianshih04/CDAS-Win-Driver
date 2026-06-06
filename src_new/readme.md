@@ -28,6 +28,9 @@ src_new
 |   |-- stdafx.cpp
 |   |-- stdafx.h
 |   `-- targetver.h
+|-- exe_no_wrapper
+|   |-- capsousb_test_no_wrapper.cpp
+|   `-- capsousb_test_no_wrapper.vcxproj
 |-- include
 |   |-- bulkusb_api.h
 |   `-- winusb_compat.h
@@ -55,6 +58,11 @@ exe/capsousb_test.cpp
 
 The CDAS command protocol remains in `exe/capsousb_test.cpp`. The compatibility
 layer changes only the transport path.
+
+`exe_no_wrapper/capsousb_test_no_wrapper.cpp` is a second sample with the same
+serial-number command test flow, but it calls SetupAPI and WinUSB directly. It
+does not include `winusb_compat.h` and does not reference
+`lib/bulkusb_lib-2010.vcxproj`.
 
 ## Compatibility Layer
 
@@ -99,14 +107,22 @@ The active Visual Studio project files are:
 
 - `exe/capsousb_test.vcxproj`
 - `lib/bulkusb_lib-2010.vcxproj`
+- `exe_no_wrapper/capsousb_test_no_wrapper.vcxproj`
 
 The VS2022 `v143` toolset is used with plain Win32/WinUSB APIs.
 
-Validated command:
+Validated wrapper-sample command:
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
 MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+```
+
+Validated no-wrapper sample command:
+
+```bat
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
+MSBuild.exe exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The sample links against:
@@ -116,8 +132,13 @@ The sample links against:
 
 The INF has been verified with WDK `InfVerif.exe`.
 
-The repository-level `dist/capsousb_test.exe` is a prebuilt copy of the Win32 debug
-sample executable. Rebuild and refresh it when this source package changes.
+The repository-level `dist` folder keeps prebuilt Win32 debug sample
+executables:
+
+- `dist/capsousb_test.exe`
+- `dist/capsousb_test_no_wrapper.exe`
+
+Rebuild and refresh them when this source package changes.
 
 ## Installation
 

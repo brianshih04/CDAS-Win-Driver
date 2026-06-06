@@ -22,10 +22,12 @@ src_new/sys/cdas_winusb.inf
 src_new/include/winusb_compat.h
 src_new/lib/winusb_compat.cpp
 src_new/exe/capsousb_test.cpp
+src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp
 ```
 
 The INF binds the USB device to the Windows in-box `winusb.sys` driver. The
-sample application talks to the device through the WinUSB API.
+wrapper sample talks to the device through the compatibility layer and the
+WinUSB API. The no-wrapper sample calls SetupAPI and WinUSB directly.
 
 ## Before Installation
 
@@ -88,22 +90,25 @@ The sample has been verified with VS2022 Build Tools.
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
 MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
-The build output is:
+The build outputs are:
 
 ```text
 src_new\exe\Debug\capsousb_test.exe
+src_new\exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
 ```
 
-The repository also keeps a prebuilt copy at:
+The repository also keeps prebuilt copies at:
 
 ```text
 dist\capsousb_test.exe
+dist\capsousb_test_no_wrapper.exe
 ```
 
-When the sample source changes, rebuild the executable and refresh the copy in
-`dist`.
+When the sample source changes, rebuild the executables and refresh the copies
+in `dist`.
 
 ## Run The Sample
 
@@ -113,10 +118,15 @@ policy.
 
 ```bat
 dist\capsousb_test.exe
+dist\capsousb_test_no_wrapper.exe
 ```
 
 The sample keeps the original command flow in `capsousb_test.cpp`. The WinUSB
 compatibility layer only replaces the USB transport layer.
+
+The no-wrapper sample keeps the same serial-number command test flow but
+performs device discovery, pipe selection, and bulk transfers directly with
+SetupAPI and WinUSB.
 
 ## Troubleshooting
 
