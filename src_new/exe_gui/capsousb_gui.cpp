@@ -75,7 +75,7 @@
 /* ── Layout constants (pixels) ──────────────────────────────────── */
 
 #define WIN_W   760
-#define WIN_H   780
+#define WIN_H   900
 #define MARGIN   14
 #define COL1     20
 #define COL2    100
@@ -83,17 +83,17 @@
 #define COL4    400
 #define COL5    590
 #define COL6    650
-#define ROW0    14
-#define ROW1    100
-#define ROW2    170
-#define ROW3    260
-#define ROW4    340
-#define ROW5    420
-#define ROW6    660
-#define ROW7    690
-#define CTRL_H   26
+#define ROW0    16
+#define ROW1    116
+#define ROW2    200
+#define ROW3    300
+#define ROW4    395
+#define ROW5    490
+#define ROW6    770
+#define ROW7    800
+#define CTRL_H   28
 #define BTN_W    60
-#define GRP_PAD  22
+#define GRP_PAD  24
 
 /* ── Globals ─────────────────────────────────────────────────── */
 
@@ -401,7 +401,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         g_hwndMain = hwnd;
 
         /* ── Device Connection group ── */
-        CreateGroup(hwnd, "Device Connection", MARGIN, ROW0, WIN_W - 2*MARGIN, 70);
+        CreateGroup(hwnd, "Device Connection", MARGIN, ROW0, WIN_W - 2*MARGIN, 82);
 
         CreateLabel(hwnd, "Device:", COL1, ROW0 + GRP_PAD, 55, CTRL_H);
         h = CreateCombo(hwnd, COL1 + 58, ROW0 + GRP_PAD - 2, 160, 200, IDC_COMBO_DEVTYPE);
@@ -421,13 +421,13 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         g_hBtnDisconnect = CreateButton(hwnd, "Disconnect", COL5 + 65, ROW0 + GRP_PAD + 26, BTN_W, CTRL_H, IDC_BTN_DISCONNECT);
 
         /* ── Serial Number group ── */
-        CreateGroup(hwnd, "Serial Number", MARGIN, ROW1, WIN_W - 2*MARGIN, 56);
+        CreateGroup(hwnd, "Serial Number", MARGIN, ROW1, WIN_W - 2*MARGIN, 64);
         CreateButton(hwnd, "Read", COL1, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_READ_SN);
         CreateEdit(hwnd, COL1 + BTN_W + 8, ROW1 + GRP_PAD, 350, CTRL_H, IDC_EDIT_SERIAL);
         CreateButton(hwnd, "Write", COL1 + BTN_W + 368, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_WRITE_SN);
 
         /* ── Image Download group ── */
-        CreateGroup(hwnd, "Image Download", MARGIN, ROW2, WIN_W - 2*MARGIN, 72);
+        CreateGroup(hwnd, "Image Download", MARGIN, ROW2, WIN_W - 2*MARGIN, 82);
         CreateRadio(hwnd, "Normal",    COL1,        ROW2 + GRP_PAD, 75, CTRL_H, IDC_RADIO_IMG0);
         CreateRadio(hwnd, "Rigi-Flex", COL1 + 85,   ROW2 + GRP_PAD, 80, CTRL_H, IDC_RADIO_IMG1);
         CreateRadio(hwnd, "Fast GPIO", COL1 + 175,  ROW2 + GRP_PAD, 85, CTRL_H, IDC_RADIO_IMG2);
@@ -437,7 +437,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         SetDlgItemTextA(hwnd, IDC_EDIT_IMGFILE, "image.bin");
 
         /* ── Firmware Update group ── */
-        CreateGroup(hwnd, "Firmware Update", MARGIN, ROW3, WIN_W - 2*MARGIN, 62);
+        CreateGroup(hwnd, "Firmware Update", MARGIN, ROW3, WIN_W - 2*MARGIN, 72);
         h = CreateCombo(hwnd, COL1, ROW3 + GRP_PAD - 2, 150, 200, IDC_COMBO_FW);
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Boot (0x01)");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Core (0x02)");
@@ -448,7 +448,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         CreateButton(hwnd, "Update",  COL5,      ROW3 + GRP_PAD, BTN_W + 10, CTRL_H, IDC_BTN_UPDATE_FW);
 
         /* ── Raw Command group ── */
-        CreateGroup(hwnd, "Raw Command", MARGIN, ROW4, WIN_W - 2*MARGIN, 62);
+        CreateGroup(hwnd, "Raw Command", MARGIN, ROW4, WIN_W - 2*MARGIN, 72);
         CreateLabel(hwnd, "Cmd:",   COL1,       ROW4 + GRP_PAD, 35, CTRL_H);
         CreateEdit(hwnd, COL1 + 38, ROW4 + GRP_PAD, 55, CTRL_H, IDC_EDIT_RAW_CMD);
         CreateLabel(hwnd, "Sector:", COL1 + 105, ROW4 + GRP_PAD, 45, CTRL_H);
