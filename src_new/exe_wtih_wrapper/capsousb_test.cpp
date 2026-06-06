@@ -11,7 +11,7 @@
 
    Abstract:
 
-    Console test app for BulkUsb.sys driver
+    Console test app originally written for the BulkUsb.sys driver
 
    Environment:
 
@@ -39,6 +39,14 @@
 #include <assert.h>
 #include <time.h>
 #include "..\\include\\BulkUsb_API.h"
+
+/*
+   WinUSB conversion note:
+   The original sample opened PIPE00/PIPE01 exposed by the custom BulkUsb WDM
+   driver. This src_new version keeps the command flow and old function names,
+   but winusb_compat.h redirects OpenBulkUSB/ReadFile/WriteFile/CloseHandle to
+   a user-mode WinUSB transport backed by Windows in-box winusb.sys.
+ */
 #include "..\\include\\winusb_compat.h"
 static int SwapInt(int n) {
     int t;
@@ -111,42 +119,82 @@ int VerifyCmdStatus(char* pbuf, int tag) {
     }
     return success;
 }
+
+static void PrintLastError(const char* action)
+{
+    DWORD error = GetLastError();
+    printf("%s failed. GetLastError=%lu (0x%08lX)\n", action, error, error);
+}
+
+static void PrintOpenDeviceError(const char* pipeName)
+{
+    DWORD error = GetLastError();
+
+    if (error == ERROR_NOT_FOUND) {
+        printf("CDAS WinUSB device not found while opening %s.\n", pipeName);
+        printf("Please confirm the device is connected, the WinUSB INF is installed, and Device Manager shows winusb.sys.\n");
+        return;
+    }
+
+    printf("OpenBulkUSB %s failed. GetLastError=%lu (0x%08lX)\n", pipeName, error, error);
+}
+
 /*sector 512 based command*/
 int IssueCommand(char cmd, int input, int start_sector, short nb_sector, char* buffer) {
     char cmd_buf[64], response_buf[64];
     ULONG WriteLen, nBytesWrite, ReadLen, nBytesRead;
     int success = 1;
+    int result = 1;
     HANDLE hRead = INVALID_HANDLE_VALUE, hWrite = INVALID_HANDLE_VALUE;
     int tag;
     srand( static_cast<unsigned int>( time(NULL) ) );
     tag = rand();
     hRead = OpenBulkUSB(0);     // bulk-in
     if (hRead == INVALID_HANDLE_VALUE) {
-        assert(0);
-        return -100;
+        PrintOpenDeviceError("bulk-in");
+        result = -100;
+        goto cleanup;
     }
     hWrite = OpenBulkUSB(1);    // bulk-out
     if (hWrite == INVALID_HANDLE_VALUE) {
-        assert(0);
-        return -101;
+        PrintOpenDeviceError("bulk-out");
+        result = -101;
+        goto cleanup;
     }
     /* Issue the command */
     FillCmd(cmd_buf, tag, cmd, start_sector, nb_sector);  /*start_sector=0, 23x512=12K data to transfer*/
     WriteLen = CMD_LENGTH;
-    WriteFile(hWrite, cmd_buf, WriteLen, &nBytesWrite, NULL);
+    success = WriteFile(hWrite, cmd_buf, WriteLen, &nBytesWrite, NULL);
+    if (!success) {
+        PrintLastError("WriteFile command");
+        result = -102;
+        goto cleanup;
+    }
     assert(nBytesWrite == WriteLen);
     if (nb_sector && input && buffer != NULL) {
         /* Read data*/
         success = ReadFile(hRead, buffer, 512 * nb_sector, &nBytesRead, NULL);
+        if (!success) {
+            PrintLastError("ReadFile data");
+            result = -103;
+            goto cleanup;
+        }
         if (nBytesRead != 512 * nb_sector) {
-            return -1;
+            result = -1;
+            goto cleanup;
         }
     }
     else if (nb_sector && buffer != NULL) {
         /* Write data*/
         success = WriteFile(hWrite, buffer, 512 * nb_sector, &nBytesRead, NULL);
+        if (!success) {
+            PrintLastError("WriteFile data");
+            result = -104;
+            goto cleanup;
+        }
         if (nBytesRead != 512 * nb_sector) {
-            return -2;
+            result = -2;
+            goto cleanup;
         }
     }
     /* check command status */
@@ -156,22 +204,38 @@ int IssueCommand(char cmd, int input, int start_sector, short nb_sector, char* b
                        ReadLen,
                        &nBytesRead,
                        NULL);
+    if (!success) {
+        PrintLastError("ReadFile command status");
+        result = -105;
+        goto cleanup;
+    }
     if (nBytesRead != ReadLen) {
-        return -3;
+        result = -3;
+        goto cleanup;
     }
     success = VerifyCmdStatus(response_buf, tag);
     if (!success) {
         printf("Sector Read error.\n");
-        return -4;
+        result = -4;
+        goto cleanup;
     }
-    // close devices if needed
+
+    result = success;
+
+cleanup:
+    /*
+       WinUSB conversion note:
+       OpenBulkUSB returns a compatibility context, not a native kernel handle.
+       Always route cleanup through the wrapped CloseHandle so WinUsb_Free and
+       the underlying device handle are both released on every return path.
+     */
     if (hRead != INVALID_HANDLE_VALUE) {
         CloseHandle(hRead);
     }
     if (hWrite != INVALID_HANDLE_VALUE) {
         CloseHandle(hWrite);
     }
-    return success;
+    return result;
 }
 /*byte based comamnd issuing, basicaly the start_sector and nb_sector in the command packets are set to zero,
    and meanwhile caller specify the byter number to transfer*/
@@ -179,37 +243,57 @@ int IssueCommand2(char cmd, int input, int nb_bytes, char* buffer) {
     char cmd_buf[64], response_buf[64];
     ULONG WriteLen, nBytesWrite, ReadLen, nBytesRead;
     int success = 1;
+    int result = 1;
     HANDLE hRead = INVALID_HANDLE_VALUE, hWrite = INVALID_HANDLE_VALUE;
     int tag;
     srand( static_cast<unsigned int>( time(NULL) ) );
     tag = rand();
     hRead = OpenBulkUSB(0);     // bulk-in
     if (hRead == INVALID_HANDLE_VALUE) {
-        assert(0);
-        return -100;
+        PrintOpenDeviceError("bulk-in");
+        result = -100;
+        goto cleanup;
     }
     hWrite = OpenBulkUSB(1);    // bulk-out
     if (hWrite == INVALID_HANDLE_VALUE) {
-        assert(0);
-        return -101;
+        PrintOpenDeviceError("bulk-out");
+        result = -101;
+        goto cleanup;
     }
     /* Issue the command */
     FillCmd(cmd_buf, tag, cmd, 0, 0);  /*start_sector=0, 23x512=12K data to transfer*/
     WriteLen = CMD_LENGTH;
-    WriteFile(hWrite, cmd_buf, WriteLen, &nBytesWrite, NULL);
+    success = WriteFile(hWrite, cmd_buf, WriteLen, &nBytesWrite, NULL);
+    if (!success) {
+        PrintLastError("WriteFile command");
+        result = -102;
+        goto cleanup;
+    }
     assert(nBytesWrite == WriteLen);
     if (nb_bytes && input && buffer != NULL) {
         /* Read data*/
         success = ReadFile(hRead, buffer, nb_bytes, &nBytesRead, NULL);
+        if (!success) {
+            PrintLastError("ReadFile data");
+            result = -103;
+            goto cleanup;
+        }
         if (nBytesRead != nb_bytes) {
-            return -1;
+            result = -1;
+            goto cleanup;
         }
     }
     else if (nb_bytes && buffer != NULL) {
         /* Write data*/
         success = WriteFile(hWrite, buffer, nb_bytes, &nBytesRead, NULL);
+        if (!success) {
+            PrintLastError("WriteFile data");
+            result = -104;
+            goto cleanup;
+        }
         if (nBytesRead != nb_bytes) {
-            return -2;
+            result = -2;
+            goto cleanup;
         }
     }
     /* check command status */
@@ -219,22 +303,37 @@ int IssueCommand2(char cmd, int input, int nb_bytes, char* buffer) {
                        ReadLen,
                        &nBytesRead,
                        NULL);
+    if (!success) {
+        PrintLastError("ReadFile command status");
+        result = -105;
+        goto cleanup;
+    }
     if (nBytesRead != ReadLen) {
-        return -3;
+        result = -3;
+        goto cleanup;
     }
     success = VerifyCmdStatus(response_buf, tag);
     if (!success) {
         printf("Sector Read error.\n");
-        return -4;
+        result = -4;
+        goto cleanup;
     }
-    // close devices if needed
+
+    result = success;
+
+cleanup:
+    /*
+       WinUSB conversion note:
+       Keep the same cleanup rule as IssueCommand. The returned HANDLE is owned
+       by the compatibility layer and must not be passed to arbitrary Win32 APIs.
+     */
     if (hRead != INVALID_HANDLE_VALUE) {
         CloseHandle(hRead);
     }
     if (hWrite != INVALID_HANDLE_VALUE) {
         CloseHandle(hWrite);
     }
-    return success;
+    return result;
 }
 //
 // ReadImageFromDockingSystem::
@@ -385,12 +484,26 @@ int _cdecl main(
     char serial_num[] = "CV090123-1234567";
     // char serial_num[]="ABCDEFGHIHKLMNSB";
     char buffer[64];
-    IssueCommand2(CMD_READ_SERIAL_NUMBER, 1, 16, buffer);
+    int result = IssueCommand2(CMD_READ_SERIAL_NUMBER, 1, 16, buffer);
+    if (result != 1) {
+        printf("Read serial number failed: %d\n", result);
+        return result;
+    }
     //
     strcpy(buffer, serial_num);
-    IssueCommand2(CMD_WRITE_SERIAL_NUMBER, 0, 32, buffer);
+    result = IssueCommand2(CMD_WRITE_SERIAL_NUMBER, 0, 32, buffer);
+    if (result != 1) {
+        printf("Write serial number failed: %d\n", result);
+        return result;
+    }
     //
-    IssueCommand2(CMD_READ_SERIAL_NUMBER, 1, 16, buffer);
+    result = IssueCommand2(CMD_READ_SERIAL_NUMBER, 1, 16, buffer);
+    if (result != 1) {
+        printf("Read serial number failed: %d\n", result);
+        return result;
+    }
+
+    return 0;
 }
 #if 0
 int _cdecl main(

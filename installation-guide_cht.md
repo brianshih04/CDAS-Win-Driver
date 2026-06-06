@@ -21,11 +21,13 @@
 src_new/sys/cdas_winusb.inf
 src_new/include/winusb_compat.h
 src_new/lib/winusb_compat.cpp
-src_new/exe/capsousb_test.cpp
+src_new/exe_wtih_wrapper/capsousb_test.cpp
+src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp
 ```
 
-INF 會將 USB device 綁定到 Windows 內建 `winusb.sys`。sample application 透過
-WinUSB API 與 device 溝通。
+INF 會將 USB device 綁定到 Windows 內建 `winusb.sys`。wrapper sample 透過
+compatibility layer 與 WinUSB API 和 device 溝通。no-wrapper sample 則直接呼叫
+SetupAPI 與 WinUSB。
 
 ## 安裝前確認
 
@@ -38,6 +40,7 @@ WinUSB API 與 device 溝通。
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 ## 簽章需求
 
@@ -48,6 +51,8 @@ signing key。
 Windows 10 與 Windows 11 的正式部署通常需要受信任的 driver package。
 
 若僅供工程測試，可依公司 driver test policy 使用 Windows test-signing mode。
+
+目前 INF 已包含 `PnpLockdown=1`，並已使用 WDK `InfVerif.exe` 檢查。
 
 ## 使用 pnputil 安裝
 
@@ -74,20 +79,29 @@ pnputil /add-driver src_new\sys\cdas_winusb.inf /install
 
 ## Build Sample
 
-sample 已用 VS2022 Build Tools 驗證。
+兩個 sample 都已用 VS2022 Build Tools 驗證。
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
-輸出檔：
+build 輸出檔：
 
 ```text
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+src_new\exe_wtih_wrapper\Debug\capsousb_test_with_wrapper.exe
+src_new\exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
 ```
 
-build output 不會 commit 到 repository。
+repository 也保留預先 build 好的 copies：
+
+```text
+dist\capsousb_test_with_wrapper.exe
+dist\capsousb_test_no_wrapper.exe
+```
+
+如果 sample source 有變更，請重新 build executables，並更新 `dist` 內的 copies。
 
 ## 執行 Sample
 
@@ -95,11 +109,15 @@ build output 不會 commit 到 repository。
 系統管理員權限的 command prompt 執行 sample。
 
 ```bat
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+dist\capsousb_test_with_wrapper.exe
+dist\capsousb_test_no_wrapper.exe
 ```
 
-sample 保留 `capsousb_test.cpp` 內原本的 command flow。WinUSB 轉換層只替換
-USB transport layer。
+with-wrapper sample 保留 `capsousb_test.cpp` 內原本的 command flow。WinUSB
+轉換層只替換 USB transport layer。
+
+no-wrapper sample 保留相同的 serial-number command test flow，但直接用 SetupAPI
+與 WinUSB 完成 device discovery、pipe selection 與 bulk transfer。
 
 ## Troubleshooting
 
@@ -111,6 +129,8 @@ USB transport layer。
 - 如果傳輸失敗，請確認 device 有預期的 bulk-in 與 bulk-out endpoints。
 - 如果同方向有多個 endpoints，請在 `src_new/lib/winusb_compat.cpp` 增加明確的
   endpoint selection。
+- 如果程式呼叫舊的 device-counting helper API，這份 WinUSB sample layer 會回傳
+  "not implemented"。
 
 ## Rollback
 

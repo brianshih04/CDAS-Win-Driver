@@ -4,6 +4,7 @@
 extern "C" {
 #define CDAS1_VID_PID _T("USB\\VID_03EB&PID_941C")
 #define CDAS2_VID_PID _T("USB\\VID_0638&PID_0931")
+#define CDAS_PRODUCTION_TEST_VID_PID _T("USB\\VID_03EB&PID_952C")
 //#define CDAS2_VID_PID _T("USB\\VID_0638&PID_0931&REV_0100")
 
 /*
@@ -20,8 +21,7 @@ HANDLE OpenBulkUSB(int bOutput);
 void ChooseUSBDevice(int);
 
 /*
-   0 - default, synchronous
-   1 - asynchronous
+   Compatibility no-op in the WinUSB sample.
  */
 void ChooseUSBMode(int);
 

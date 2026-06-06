@@ -14,11 +14,21 @@ Windows in-box `winusb.sys` driver plus a small user-mode compatibility layer.
 The sample command flow remains in user mode.
 
 ```text
-CDAS sample application
+CDAS with-wrapper sample application
   -> BulkUsb-compatible API names
   -> src_new/include/winusb_compat.h
   -> src_new/lib/winusb_compat.cpp
   -> WinUSB API
+  -> Windows in-box winusb.sys
+  -> CDAS USB device
+```
+
+The repository also includes a direct WinUSB sample that runs the same
+serial-number command test flow without the compatibility wrapper:
+
+```text
+CDAS no-wrapper sample application
+  -> SetupAPI / WinUSB API
   -> Windows in-box winusb.sys
   -> CDAS USB device
 ```
@@ -44,9 +54,12 @@ WinUSB package. Historical files for those systems are kept only in
 |-- installation-guide.md
 |-- installation-guide_cht.md
 |-- CDAS-Win-Driver-analysis.md
+|-- dist
+|   |-- capsousb_test_with_wrapper.exe
+|   `-- capsousb_test_no_wrapper.exe
 |-- Doc
 |   |-- CDAS3 New command_V16_AVISION.xlsx
-|   |-- USB docking system driver Guide.docx
+|   |-- USB docking system driver Guide.md
 |   `-- USB docking system driver Guide.pdf
 |-- src_new
 |   |-- readme.md
@@ -55,7 +68,8 @@ WinUSB package. Historical files for those systems are kept only in
 |   |   `-- cdas_winusb.inf
 |   |-- include
 |   |-- lib
-|   `-- exe
+|   |-- exe_wtih_wrapper
+|   `-- exe_no_wrapper
 `-- Old_files
 ```
 
@@ -70,7 +84,18 @@ comparison, and recovery only.
   old sample calls to WinUSB-backed functions.
 - `src_new/lib/winusb_compat.cpp`: SetupAPI and WinUSB transport
   implementation.
-- `src_new/exe/capsousb_test.cpp`: sample command-flow code.
+- `src_new/exe_wtih_wrapper/capsousb_test.cpp`: with-wrapper sample
+  command-flow code.
+- `src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp`: direct WinUSB sample
+  with the same serial-number test flow and no wrapper project dependency.
+- `dist/capsousb_test_with_wrapper.exe`: prebuilt Win32 debug with-wrapper
+  sample executable.
+- `dist/capsousb_test_no_wrapper.exe`: prebuilt Win32 debug no-wrapper sample
+  executable.
+- `Doc/USB docking system driver Guide.md`: current WinUSB installation guide
+  source.
+- `Doc/USB docking system driver Guide.pdf`: rendered copy of the current
+  WinUSB installation guide.
 - `installation-guide.md`: installation and verification procedure.
 - `CDAS-Win-Driver-analysis.md`: project analysis report.
 
@@ -80,25 +105,39 @@ The WinUSB INF currently includes:
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 Verify the actual device VID/PID before packaging or deployment.
 
+`src_new/sys/cdas_winusb.inf` registers the docking-system interface GUID and
+the production-test interface GUID used by the WinUSB compatibility layer.
+
 ## Build Summary
 
-The Visual Studio projects in `src_new` have been updated for VS2022 `v143`
-and do not require MFC.
+The Visual Studio projects in `src_new` use the VS2022 `v143` toolset and
+plain Win32/WinUSB APIs.
 
-Validated local build target:
+Validated local build targets:
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
-The sample links against:
+The samples link against:
 
 - `setupapi.lib`
 - `winusb.lib`
+
+The package was verified with WDK `InfVerif.exe`; the INF is valid.
+
+Prebuilt sample executables are kept under `dist`:
+
+- `dist/capsousb_test_with_wrapper.exe`
+- `dist/capsousb_test_no_wrapper.exe`
+
+Rebuild them from the matching project whenever the sample source changes.
 
 ## Installation
 
@@ -110,7 +149,8 @@ Short version:
 2. Package and sign `src_new/sys/cdas_winusb.inf`.
 3. Install with `pnputil`.
 4. Verify that the device is using `winusb.sys`.
-5. Run the sample application.
+5. Run `dist/capsousb_test_with_wrapper.exe`, `dist/capsousb_test_no_wrapper.exe`, or a
+   locally rebuilt sample application.
 
 ## Important Notes
 
@@ -120,4 +160,6 @@ Short version:
   sample should use that handle.
 - The compatibility layer selects the first bulk or interrupt endpoint that
   matches the requested direction.
+- Legacy helper APIs for device counting are present only as compatibility
+  stubs and return "not implemented".
 - The old custom WDM driver is not used by the active WinUSB package.

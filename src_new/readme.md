@@ -20,21 +20,21 @@ package. Historical files for those systems are archived under `..\Old_files`.
 
 ```text
 src_new
-|-- bulkusb.sln
 |-- readme.md
 |-- readme_cht.md
-|-- exe
+|-- exe_wtih_wrapper
 |   |-- capsousb_test.cpp
-|   |-- capsousb_test.vcproj
 |   |-- capsousb_test.vcxproj
 |   |-- stdafx.cpp
 |   |-- stdafx.h
 |   `-- targetver.h
+|-- exe_no_wrapper
+|   |-- capsousb_test_no_wrapper.cpp
+|   `-- capsousb_test_no_wrapper.vcxproj
 |-- include
 |   |-- bulkusb_api.h
 |   `-- winusb_compat.h
 |-- lib
-|   |-- bulkusb_lib.vcproj
 |   |-- bulkusb_lib-2010.vcxproj
 |   |-- stdafx.cpp
 |   |-- stdafx.h
@@ -47,7 +47,7 @@ src_new
 ## Architecture
 
 ```text
-exe/capsousb_test.cpp
+exe_wtih_wrapper/capsousb_test.cpp
   -> OpenBulkUSB / ReadFile / WriteFile / CloseHandle
   -> include/winusb_compat.h
   -> lib/winusb_compat.cpp
@@ -56,8 +56,14 @@ exe/capsousb_test.cpp
   -> CDAS USB device
 ```
 
-The CDAS command protocol remains in `exe/capsousb_test.cpp`. The compatibility
-layer changes only the transport path.
+The CDAS command protocol remains in
+`exe_wtih_wrapper/capsousb_test.cpp`. The compatibility layer changes only the
+transport path.
+
+`exe_no_wrapper/capsousb_test_no_wrapper.cpp` is a second sample with the same
+serial-number command test flow, but it calls SetupAPI and WinUSB directly. It
+does not include `winusb_compat.h` and does not reference
+`lib/bulkusb_lib-2010.vcxproj`.
 
 ## Compatibility Layer
 
@@ -88,32 +94,64 @@ Current hardware IDs:
 
 - `USB\VID_03EB&PID_941C`
 - `USB\VID_0638&PID_0931`
+- `USB\VID_03EB&PID_952C`
 
 Verify the actual VID/PID before deployment. The INF must be packaged and
 signed for the target Windows environment.
 
+The INF includes `PnpLockdown=1` and registers both docking-system and
+production-test interface GUIDs.
+
 ## Build
 
-The Visual Studio project files are kept for the legacy sample structure:
+The active Visual Studio project files are:
 
-- `exe/capsousb_test.vcproj`
-- `exe/capsousb_test.vcxproj`
-- `lib/bulkusb_lib.vcproj`
+- `exe_wtih_wrapper/capsousb_test.vcxproj`
 - `lib/bulkusb_lib-2010.vcxproj`
+- `exe_no_wrapper/capsousb_test_no_wrapper.vcxproj`
 
-The VS2022 `v143` toolset is used. MFC is not required.
+The VS2022 `v143` toolset is used with plain Win32/WinUSB APIs.
 
-Validated command:
+Validated with-wrapper sample command:
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
-The sample links against:
+With-wrapper build output:
+
+```text
+exe_wtih_wrapper\Debug\capsousb_test_with_wrapper.exe
+```
+
+Validated no-wrapper sample command:
+
+```bat
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
+MSBuild.exe exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+```
+
+No-wrapper build output:
+
+```text
+exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
+```
+
+The samples link against:
 
 - `setupapi.lib`
 - `winusb.lib`
+
+The INF has been verified with WDK `InfVerif.exe`.
+
+The repository-level `dist` folder keeps prebuilt Win32 debug sample
+executables:
+
+- `dist/capsousb_test_with_wrapper.exe`
+- `dist/capsousb_test_no_wrapper.exe`
+
+Rebuild and refresh them when this source package changes.
 
 ## Installation
 
@@ -131,5 +169,7 @@ Use the repository-level installation guide:
   endpoint by direction.
 - If a device exposes multiple endpoints in the same direction, add explicit
   endpoint mapping in `lib/winusb_compat.cpp`.
+- Device-counting helper APIs are compatibility stubs and return "not
+  implemented".
 - The original sample command flow is preserved and is not a full CDAS3 command
   implementation.
