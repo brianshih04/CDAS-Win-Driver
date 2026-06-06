@@ -74,26 +74,26 @@
 
 /* ── Layout constants (pixels) ──────────────────────────────────── */
 
-#define WIN_W   560
-#define WIN_H   620
-#define MARGIN   10
-#define COL1     15
-#define COL2     85
-#define COL3    150
-#define COL4    300
-#define COL5    440
-#define COL6    485
-#define ROW0    10
-#define ROW1     75
-#define ROW2    130
-#define ROW3    200
-#define ROW4    265
-#define ROW5    330
-#define ROW6    520
-#define ROW7    545
-#define CTRL_H   22
-#define BTN_W    50
-#define GRP_PAD  18
+#define WIN_W   760
+#define WIN_H   640
+#define MARGIN   14
+#define COL1     20
+#define COL2    100
+#define COL3    175
+#define COL4    400
+#define COL5    590
+#define COL6    650
+#define ROW0    12
+#define ROW1     82
+#define ROW2    140
+#define ROW3    215
+#define ROW4    285
+#define ROW5    355
+#define ROW6    548
+#define ROW7    575
+#define CTRL_H   24
+#define BTN_W    60
+#define GRP_PAD  20
 
 /* ── Globals ─────────────────────────────────────────────────── */
 
@@ -401,64 +401,64 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         g_hwndMain = hwnd;
 
         /* ── Device Connection group ── */
-        CreateGroup(hwnd, "Device Connection", MARGIN, ROW0, WIN_W - 2*MARGIN, 55);
+        CreateGroup(hwnd, "Device Connection", MARGIN, ROW0, WIN_W - 2*MARGIN, 58);
 
-        CreateLabel(hwnd, "Device:", COL1, ROW0 + GRP_PAD, 50, CTRL_H);
-        h = CreateCombo(hwnd, COL1 + 50, ROW0 + GRP_PAD - 2, 130, 200, IDC_COMBO_DEVTYPE);
+        CreateLabel(hwnd, "Device:", COL1, ROW0 + GRP_PAD, 55, CTRL_H);
+        h = CreateCombo(hwnd, COL1 + 58, ROW0 + GRP_PAD - 2, 160, 200, IDC_COMBO_DEVTYPE);
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Docking System");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Production Test");
         SendMessageA(h, CB_SETCURSEL, 0, 0);
 
-        CreateLabel(hwnd, "Version:", COL1 + 195, ROW0 + GRP_PAD, 50, CTRL_H);
-        h = CreateCombo(hwnd, COL1 + 245, ROW0 + GRP_PAD - 2, 140, 200, IDC_COMBO_VER);
+        CreateLabel(hwnd, "Version:", COL1 + 235, ROW0 + GRP_PAD, 55, CTRL_H);
+        h = CreateCombo(hwnd, COL1 + 295, ROW0 + GRP_PAD - 2, 170, 200, IDC_COMBO_VER);
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Any");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"CDAS1 (03EB:941C)");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"CDAS2 (0638:0931)");
         SendMessageA(h, CB_SETCURSEL, 0, 0);
 
-        CreateButton(hwnd, "Refresh",   COL5,      ROW0 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_REFRESH);
-        g_hBtnConnect    = CreateButton(hwnd, "Connect",    COL5 + 55, ROW0 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_CONNECT);
-        g_hBtnDisconnect = CreateButton(hwnd, "Disconnect", COL5 + 55, ROW0 + GRP_PAD + 24, BTN_W, CTRL_H, IDC_BTN_DISCONNECT);
+        CreateButton(hwnd, "Refresh",    COL5,           ROW0 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_REFRESH);
+        g_hBtnConnect    = CreateButton(hwnd, "Connect",    COL5 + 65, ROW0 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_CONNECT);
+        g_hBtnDisconnect = CreateButton(hwnd, "Disconnect", COL5 + 65, ROW0 + GRP_PAD + 26, BTN_W, CTRL_H, IDC_BTN_DISCONNECT);
 
         /* ── Serial Number group ── */
         CreateGroup(hwnd, "Serial Number", MARGIN, ROW1, WIN_W - 2*MARGIN, 48);
-        CreateButton(hwnd, "Read", COL1, ROW1 + GRP_PAD, BTN_W - 5, CTRL_H, IDC_BTN_READ_SN);
-        CreateEdit(hwnd, COL1 + BTN_W, ROW1 + GRP_PAD, 220, CTRL_H, IDC_EDIT_SERIAL);
-        CreateButton(hwnd, "Write", COL1 + BTN_W + 230, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_WRITE_SN);
+        CreateButton(hwnd, "Read", COL1, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_READ_SN);
+        CreateEdit(hwnd, COL1 + BTN_W + 8, ROW1 + GRP_PAD, 350, CTRL_H, IDC_EDIT_SERIAL);
+        CreateButton(hwnd, "Write", COL1 + BTN_W + 368, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_WRITE_SN);
 
         /* ── Image Download group ── */
         CreateGroup(hwnd, "Image Download", MARGIN, ROW2, WIN_W - 2*MARGIN, 62);
-        CreateRadio(hwnd, "Normal",    COL1,       ROW2 + GRP_PAD, 70, CTRL_H, IDC_RADIO_IMG0);
-        CreateRadio(hwnd, "Rigi-Flex", COL1 + 75,  ROW2 + GRP_PAD, 75, CTRL_H, IDC_RADIO_IMG1);
-        CreateRadio(hwnd, "Fast GPIO", COL1 + 155, ROW2 + GRP_PAD, 80, CTRL_H, IDC_RADIO_IMG2);
-        CreateEdit(hwnd, COL1, ROW2 + GRP_PAD + 24, COL5 - COL1 - 75, CTRL_H, IDC_EDIT_IMGFILE);
-        CreateButton(hwnd, "Browse",   COL5 - 70, ROW2 + GRP_PAD + 24, 60, CTRL_H, IDC_BTN_BROWSE_IMG);
-        CreateButton(hwnd, "Download", COL5,       ROW2 + GRP_PAD + 24, BTN_W + 5, CTRL_H, IDC_BTN_DOWNLOAD_IMG);
+        CreateRadio(hwnd, "Normal",    COL1,        ROW2 + GRP_PAD, 75, CTRL_H, IDC_RADIO_IMG0);
+        CreateRadio(hwnd, "Rigi-Flex", COL1 + 85,   ROW2 + GRP_PAD, 80, CTRL_H, IDC_RADIO_IMG1);
+        CreateRadio(hwnd, "Fast GPIO", COL1 + 175,  ROW2 + GRP_PAD, 85, CTRL_H, IDC_RADIO_IMG2);
+        CreateEdit(hwnd, COL1, ROW2 + GRP_PAD + 26, COL5 - COL1 - 80, CTRL_H, IDC_EDIT_IMGFILE);
+        CreateButton(hwnd, "Browse",   COL5 - 72, ROW2 + GRP_PAD + 26, 68, CTRL_H, IDC_BTN_BROWSE_IMG);
+        CreateButton(hwnd, "Download", COL5,       ROW2 + GRP_PAD + 26, BTN_W + 10, CTRL_H, IDC_BTN_DOWNLOAD_IMG);
         SetDlgItemTextA(hwnd, IDC_EDIT_IMGFILE, "image.bin");
 
         /* ── Firmware Update group ── */
         CreateGroup(hwnd, "Firmware Update", MARGIN, ROW3, WIN_W - 2*MARGIN, 58);
-        h = CreateCombo(hwnd, COL1, ROW3 + GRP_PAD - 2, 130, 200, IDC_COMBO_FW);
+        h = CreateCombo(hwnd, COL1, ROW3 + GRP_PAD - 2, 150, 200, IDC_COMBO_FW);
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Boot (0x01)");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Core (0x02)");
         SendMessageA(h, CB_ADDSTRING, 0, (LPARAM)"Cam (0x03)");
         SendMessageA(h, CB_SETCURSEL, 0, 0);
-        CreateEdit(hwnd, COL1 + 140, ROW3 + GRP_PAD, COL5 - COL1 - 220, CTRL_H, IDC_EDIT_FWFILE);
-        CreateButton(hwnd, "Browse",  COL5 - 70, ROW3 + GRP_PAD, 60, CTRL_H, IDC_BTN_BROWSE_FW);
-        CreateButton(hwnd, "Update",  COL5,      ROW3 + GRP_PAD, BTN_W + 5, CTRL_H, IDC_BTN_UPDATE_FW);
+        CreateEdit(hwnd, COL1 + 160, ROW3 + GRP_PAD, COL5 - COL1 - 240, CTRL_H, IDC_EDIT_FWFILE);
+        CreateButton(hwnd, "Browse",  COL5 - 72, ROW3 + GRP_PAD, 68, CTRL_H, IDC_BTN_BROWSE_FW);
+        CreateButton(hwnd, "Update",  COL5,      ROW3 + GRP_PAD, BTN_W + 10, CTRL_H, IDC_BTN_UPDATE_FW);
 
         /* ── Raw Command group ── */
         CreateGroup(hwnd, "Raw Command", MARGIN, ROW4, WIN_W - 2*MARGIN, 58);
-        CreateLabel(hwnd, "Cmd:",   COL1,      ROW4 + GRP_PAD, 30, CTRL_H);
-        CreateEdit(hwnd, COL1 + 30, ROW4 + GRP_PAD, 40, CTRL_H, IDC_EDIT_RAW_CMD);
-        CreateLabel(hwnd, "Sector:", COL1 + 80, ROW4 + GRP_PAD, 40, CTRL_H);
-        CreateEdit(hwnd, COL1 + 120, ROW4 + GRP_PAD, 50, CTRL_H, IDC_EDIT_RAW_SECTOR);
-        CreateLabel(hwnd, "Count:", COL1 + 180, ROW4 + GRP_PAD, 38, CTRL_H);
-        CreateEdit(hwnd, COL1 + 218, ROW4 + GRP_PAD, 50, CTRL_H, IDC_EDIT_RAW_COUNT);
-        CreateButton(hwnd, "Send",   COL5, ROW4 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_SEND_RAW);
+        CreateLabel(hwnd, "Cmd:",   COL1,       ROW4 + GRP_PAD, 35, CTRL_H);
+        CreateEdit(hwnd, COL1 + 38, ROW4 + GRP_PAD, 55, CTRL_H, IDC_EDIT_RAW_CMD);
+        CreateLabel(hwnd, "Sector:", COL1 + 105, ROW4 + GRP_PAD, 45, CTRL_H);
+        CreateEdit(hwnd, COL1 + 155, ROW4 + GRP_PAD, 65, CTRL_H, IDC_EDIT_RAW_SECTOR);
+        CreateLabel(hwnd, "Count:", COL1 + 230, ROW4 + GRP_PAD, 42, CTRL_H);
+        CreateEdit(hwnd, COL1 + 278, ROW4 + GRP_PAD, 65, CTRL_H, IDC_EDIT_RAW_COUNT);
+        CreateButton(hwnd, "Send",   COL5, ROW4 + GRP_PAD, BTN_W + 10, CTRL_H, IDC_BTN_SEND_RAW);
 
         /* ── Log output ── */
-        g_hwndLog = CreateLogEdit(hwnd, MARGIN, ROW5, WIN_W - 2*MARGIN, 180, IDC_EDIT_LOG);
+        g_hwndLog = CreateLogEdit(hwnd, MARGIN, ROW5, WIN_W - 2*MARGIN, 178, IDC_EDIT_LOG);
         hMono = CreateFont(15, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
                            DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
                            CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
