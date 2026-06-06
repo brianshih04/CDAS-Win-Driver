@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.0.0
+MinimumVisualStudioVersion = 10.0.0.0
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Capso-Usb_lib-2010", "lib\bulkusb_lib-2010.vcxproj", "{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "capsousb_gui", "exe_gui\capsousb_gui.vcxproj", "{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5} = {AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Debug|Win32.Build.0 = Debug|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Release|Win32.ActiveCfg = Release|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Release|Win32.Build.0 = Release|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Debug|Win32.Build.0 = Debug|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Release|Win32.ActiveCfg = Release|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

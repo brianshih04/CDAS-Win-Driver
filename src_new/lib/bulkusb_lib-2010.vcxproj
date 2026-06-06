@@ -212,9 +212,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MFC_DLL_Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="winusb_compat.cpp" />
+    <ClCompile Include="cdas_cmd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\bulkusb_api.h" />
+    <ClInclude Include="..\include\cdas_cmd.h" />
     <ClInclude Include="..\include\winusb_compat.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
