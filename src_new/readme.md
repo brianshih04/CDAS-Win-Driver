@@ -20,12 +20,10 @@ package. Historical files for those systems are archived under `..\Old_files`.
 
 ```text
 src_new
-|-- bulkusb.sln
 |-- readme.md
 |-- readme_cht.md
 |-- exe
 |   |-- capsousb_test.cpp
-|   |-- capsousb_test.vcproj
 |   |-- capsousb_test.vcxproj
 |   |-- stdafx.cpp
 |   |-- stdafx.h
@@ -34,7 +32,6 @@ src_new
 |   |-- bulkusb_api.h
 |   `-- winusb_compat.h
 |-- lib
-|   |-- bulkusb_lib.vcproj
 |   |-- bulkusb_lib-2010.vcxproj
 |   |-- stdafx.cpp
 |   |-- stdafx.h
@@ -98,20 +95,18 @@ production-test interface GUIDs.
 
 ## Build
 
-The Visual Studio project files are kept for the legacy sample structure:
+The active Visual Studio project files are:
 
-- `exe/capsousb_test.vcproj`
 - `exe/capsousb_test.vcxproj`
-- `lib/bulkusb_lib.vcproj`
 - `lib/bulkusb_lib-2010.vcxproj`
 
-The VS2022 `v143` toolset is used. MFC is not required.
+The VS2022 `v143` toolset is used with plain Win32/WinUSB APIs.
 
 Validated command:
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The sample links against:

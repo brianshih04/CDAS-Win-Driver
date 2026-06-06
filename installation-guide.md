@@ -87,13 +87,13 @@ The sample has been verified with VS2022 Build Tools.
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The build output is:
 
 ```text
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+src_new\exe\Debug\capsousb_test.exe
 ```
 
 The repository also keeps a prebuilt copy at:

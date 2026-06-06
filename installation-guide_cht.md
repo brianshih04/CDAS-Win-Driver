@@ -81,13 +81,13 @@ sample 已用 VS2022 Build Tools 驗證。
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 build 輸出檔：
 
 ```text
-src_new\exe\MFC_DLL_Debug\test_exe.exe
+src_new\exe\Debug\capsousb_test.exe
 ```
 
 repository 也保留一份預先 build 好的 copy：

@@ -88,13 +88,14 @@ interface GUID 與 production-test interface GUID。
 
 ## Build 摘要
 
-`src_new` 內的 Visual Studio project 已更新為 VS2022 `v143`，且不需要 MFC。
+`src_new` 內的 Visual Studio project 使用 VS2022 `v143` toolset，以及單純的
+Win32/WinUSB API。
 
 已驗證的本機 build target：
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 sample 會 link：

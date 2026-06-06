@@ -92,14 +92,14 @@ the production-test interface GUID used by the WinUSB compatibility layer.
 
 ## Build Summary
 
-The Visual Studio projects in `src_new` have been updated for VS2022 `v143`
-and do not require MFC.
+The Visual Studio projects in `src_new` use the VS2022 `v143` toolset and
+plain Win32/WinUSB APIs.
 
 Validated local build target:
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=MFC_DLL_Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The sample links against:
