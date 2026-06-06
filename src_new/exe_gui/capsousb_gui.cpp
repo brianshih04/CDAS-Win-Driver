@@ -74,15 +74,15 @@
 
 /* ── Layout constants (pixels) ──────────────────────────────────── */
 
-#define WIN_W   760
+#define WIN_W   900
 #define WIN_H   900
-#define MARGIN   14
-#define COL1     20
-#define COL2    100
-#define COL3    175
-#define COL4    400
-#define COL5    590
-#define COL6    650
+#define MARGIN   16
+#define COL1     22
+#define COL2    110
+#define COL3    190
+#define COL4    460
+#define COL5    720
+#define COL6    790
 #define ROW0    16
 #define ROW1    116
 #define ROW2    200
@@ -92,7 +92,7 @@
 #define ROW6    770
 #define ROW7    800
 #define CTRL_H   28
-#define BTN_W    60
+#define BTN_W    65
 #define GRP_PAD  24
 
 /* ── Globals ─────────────────────────────────────────────────── */
@@ -423,8 +423,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         /* ── Serial Number group ── */
         CreateGroup(hwnd, "Serial Number", MARGIN, ROW1, WIN_W - 2*MARGIN, 64);
         CreateButton(hwnd, "Read", COL1, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_READ_SN);
-        CreateEdit(hwnd, COL1 + BTN_W + 8, ROW1 + GRP_PAD, 350, CTRL_H, IDC_EDIT_SERIAL);
-        CreateButton(hwnd, "Write", COL1 + BTN_W + 368, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_WRITE_SN);
+        CreateEdit(hwnd, COL1 + BTN_W + 10, ROW1 + GRP_PAD, 460, CTRL_H, IDC_EDIT_SERIAL);
+        CreateButton(hwnd, "Write", COL1 + BTN_W + 480, ROW1 + GRP_PAD, BTN_W, CTRL_H, IDC_BTN_WRITE_SN);
 
         /* ── Image Download group ── */
         CreateGroup(hwnd, "Image Download", MARGIN, ROW2, WIN_W - 2*MARGIN, 82);

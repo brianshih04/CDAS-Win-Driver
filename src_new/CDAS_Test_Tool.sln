@@ -12,18 +12,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "capsousb_gui", "exe_gui\cap
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		MFC_DLL_Debug|Win32 = MFC_DLL_Debug|Win32
-		MFC_DLL_Release|Win32 = MFC_DLL_Release|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.MFC_DLL_Debug|Win32.ActiveCfg = MFC_DLL_Debug|Win32
-		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.MFC_DLL_Debug|Win32.Build.0 = MFC_DLL_Debug|Win32
-		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.MFC_DLL_Release|Win32.ActiveCfg = MFC_DLL_Release|Win32
-		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.MFC_DLL_Release|Win32.Build.0 = MFC_DLL_Release|Win32
-		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.MFC_DLL_Debug|Win32.ActiveCfg = Debug|Win32
-		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.MFC_DLL_Debug|Win32.Build.0 = Debug|Win32
-		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.MFC_DLL_Release|Win32.ActiveCfg = Release|Win32
-		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.MFC_DLL_Release|Win32.Build.0 = Release|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Debug|Win32.Build.0 = Debug|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Release|Win32.ActiveCfg = Release|Win32
+		{AE64CCF5-6022-4E61-B341-9FD90FA7CAC5}.Release|Win32.Build.0 = Release|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Debug|Win32.Build.0 = Debug|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Release|Win32.ActiveCfg = Release|Win32
+		{B3F7D2E1-4A5C-6D9E-0F1A-2B3C4D5E6F70}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
