@@ -21,7 +21,7 @@
 src_new/sys/cdas_winusb.inf
 src_new/include/winusb_compat.h
 src_new/lib/winusb_compat.cpp
-src_new/exe/capsousb_test.cpp
+src_new/exe_wtih_wrapper/capsousb_test.cpp
 src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp
 ```
 
@@ -79,25 +79,25 @@ pnputil /add-driver src_new\sys\cdas_winusb.inf /install
 
 ## Build Sample
 
-sample 已用 VS2022 Build Tools 驗證。
+兩個 sample 都已用 VS2022 Build Tools 驗證。
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 build 輸出檔：
 
 ```text
-src_new\exe\Debug\capsousb_test.exe
+src_new\exe_wtih_wrapper\Debug\capsousb_test_with_wrapper.exe
 src_new\exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
 ```
 
 repository 也保留預先 build 好的 copies：
 
 ```text
-dist\capsousb_test.exe
+dist\capsousb_test_with_wrapper.exe
 dist\capsousb_test_no_wrapper.exe
 ```
 
@@ -109,12 +109,12 @@ dist\capsousb_test_no_wrapper.exe
 系統管理員權限的 command prompt 執行 sample。
 
 ```bat
-dist\capsousb_test.exe
+dist\capsousb_test_with_wrapper.exe
 dist\capsousb_test_no_wrapper.exe
 ```
 
-sample 保留 `capsousb_test.cpp` 內原本的 command flow。WinUSB 轉換層只替換
-USB transport layer。
+with-wrapper sample 保留 `capsousb_test.cpp` 內原本的 command flow。WinUSB
+轉換層只替換 USB transport layer。
 
 no-wrapper sample 保留相同的 serial-number command test flow，但直接用 SetupAPI
 與 WinUSB 完成 device discovery、pipe selection 與 bulk transfer。

@@ -47,7 +47,7 @@ src_new
 ## 架構
 
 ```text
-exe/capsousb_test.cpp
+exe_wtih_wrapper/capsousb_test.cpp
   -> OpenBulkUSB / ReadFile / WriteFile / CloseHandle
   -> include/winusb_compat.h
   -> lib/winusb_compat.cpp
@@ -56,8 +56,8 @@ exe/capsousb_test.cpp
   -> CDAS USB device
 ```
 
-CDAS command protocol 仍保留在 `exe/capsousb_test.cpp`。轉換層只改變 USB
-transport path。
+CDAS command protocol 仍保留在 `exe_wtih_wrapper/capsousb_test.cpp`。轉換層只
+改變 USB transport path。
 
 `exe_no_wrapper/capsousb_test_no_wrapper.cpp` 是第二份 sample，保留相同的 serial
 number command test flow，但直接呼叫 SetupAPI 與 WinUSB。它不 include
@@ -104,17 +104,17 @@ interface GUID。
 
 目前 active Visual Studio project files：
 
-- `exe/capsousb_test.vcxproj`
+- `exe_wtih_wrapper/capsousb_test.vcxproj`
 - `lib/bulkusb_lib-2010.vcxproj`
 - `exe_no_wrapper/capsousb_test_no_wrapper.vcxproj`
 
 目前使用 VS2022 `v143` toolset，以及單純的 Win32/WinUSB API。
 
-已驗證 wrapper sample 指令：
+已驗證 with-wrapper sample 指令：
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 已驗證 no-wrapper sample 指令：
@@ -134,7 +134,7 @@ INF 已使用 WDK `InfVerif.exe` 驗證。
 repository 根目錄的 `dist` folder 會保留預先 build 好的 Win32 debug sample
 executables：
 
-- `dist/capsousb_test.exe`
+- `dist/capsousb_test_with_wrapper.exe`
 - `dist/capsousb_test_no_wrapper.exe`
 
 若這份 source package 有變更，請重新 build 並更新這些檔案。

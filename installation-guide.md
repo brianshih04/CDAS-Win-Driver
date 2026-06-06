@@ -21,7 +21,7 @@ deployment should be validated on the exact target OS and architecture.
 src_new/sys/cdas_winusb.inf
 src_new/include/winusb_compat.h
 src_new/lib/winusb_compat.cpp
-src_new/exe/capsousb_test.cpp
+src_new/exe_wtih_wrapper/capsousb_test.cpp
 src_new/exe_no_wrapper/capsousb_test_no_wrapper.cpp
 ```
 
@@ -85,25 +85,25 @@ matches the INF.
 
 ## Build The Sample
 
-The sample has been verified with VS2022 Build Tools.
+Both samples have been verified with VS2022 Build Tools.
 
 ```bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-MSBuild.exe src_new\exe\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
+MSBuild.exe src_new\exe_wtih_wrapper\capsousb_test.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 MSBuild.exe src_new\exe_no_wrapper\capsousb_test_no_wrapper.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build
 ```
 
 The build outputs are:
 
 ```text
-src_new\exe\Debug\capsousb_test.exe
+src_new\exe_wtih_wrapper\Debug\capsousb_test_with_wrapper.exe
 src_new\exe_no_wrapper\Debug\capsousb_test_no_wrapper.exe
 ```
 
 The repository also keeps prebuilt copies at:
 
 ```text
-dist\capsousb_test.exe
+dist\capsousb_test_with_wrapper.exe
 dist\capsousb_test_no_wrapper.exe
 ```
 
@@ -117,12 +117,13 @@ appropriately permissioned command prompt if required by the local device access
 policy.
 
 ```bat
-dist\capsousb_test.exe
+dist\capsousb_test_with_wrapper.exe
 dist\capsousb_test_no_wrapper.exe
 ```
 
-The sample keeps the original command flow in `capsousb_test.cpp`. The WinUSB
-compatibility layer only replaces the USB transport layer.
+The with-wrapper sample keeps the original command flow in
+`capsousb_test.cpp`. The WinUSB compatibility layer only replaces the USB
+transport layer.
 
 The no-wrapper sample keeps the same serial-number command test flow but
 performs device discovery, pipe selection, and bulk transfers directly with
